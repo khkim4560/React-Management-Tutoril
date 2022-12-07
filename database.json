@@ -1,0 +1,8 @@
+{
+    "host"          :""
+    ,"user"         :""
+    ,"passwod"      :""
+    ,"port"         :""
+    ,"database"     :""
+    ,"mongo_db_uri" :"mongodb+srv://mongotest:mongotest@cluster0.memrhj8.mongodb.net/?retryWrites=true&w=majority"
+}
