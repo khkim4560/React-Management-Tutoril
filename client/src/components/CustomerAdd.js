@@ -10,9 +10,8 @@ import { withStyles } from "@material-ui/core/styles";
 
 
 const styles = theme => ({
-    hidden : {
-        display : "none"
-
+    hidden : {        
+        display: 'none'
     }    
 });
 
@@ -64,6 +63,7 @@ class CustomerAdd extends React.Component{
         const url = `${apiUrl}/customers`; 
 
         const formData = new FormData();
+
         formData.append("image"         ,this.state.file);
         formData.append("name"          ,this.state.username);
         formData.append("birthday"      ,this.state.birthday);
@@ -81,9 +81,8 @@ class CustomerAdd extends React.Component{
         //console.log("config"        , config);
         
         axios.post(url, formData,   config)
-        .then((res)=>{
-            //console.log(res.data);
-            this.props.stateRefresh();            
+        .then((res)=>{            
+            
             this.setState(
                 this.state ={
                 file        : null,
@@ -94,6 +93,9 @@ class CustomerAdd extends React.Component{
                 fileName    : "",
                 open        : false
             });            
+            //3초 후에 다시 부모 Rrefresh 함수호출
+            setTimeout(()=>{this.props.stateRefresh()}, (2*1000));
+
         })
         .catch(err => console.log("addCustomer ERR",err));
     }
@@ -152,7 +154,7 @@ class CustomerAdd extends React.Component{
                     
                     <Button variant="contained" color="primary" onClick={this.handleFormSumbit}>저장</Button>
                     <Button variant="outlined" color="primary" onClick={this.handleClickClose}>닫기</Button>
-                    
+
                     </DialogActions>
                 </Dialog>
 

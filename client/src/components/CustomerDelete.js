@@ -18,7 +18,7 @@ class CustomerDelete extends React.Component{
             open: false
         }
     }
-
+    
     handleDeleteClick = (e)=>{
         e.preventDefault();
         this.deleteCustomer();         
@@ -38,7 +38,8 @@ class CustomerDelete extends React.Component{
         axios.post(url,formData)
         .then((res)=>{
             //console.log(res.data);
-            this.props.stateRefresh();                                    
+            //3초 후에 다시 부모 Rrefresh 함수호출
+            setTimeout(()=>{this.props.stateRefresh()}, (2*1000));
         })
         .catch(err => console.log("deleteCustomer ERR",err));
     }
@@ -82,7 +83,6 @@ class CustomerDelete extends React.Component{
             </div>   
         )
     }
-
 }
 
-export default CustomerDelete;
+export default  CustomerDelete;

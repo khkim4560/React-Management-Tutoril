@@ -35,7 +35,7 @@ class App extends Component{
     super(props);
 
     this.state= {
-      customers : "",
+      customers : [],
       completed : 0      
     }
   }
@@ -43,8 +43,8 @@ class App extends Component{
   stateRefresh =()=>{
     
     this.setState({
-      customers : "",
-      completed : 0      
+      customers : [],
+      completed : 0
     });
 
     this.callApi()
@@ -52,7 +52,7 @@ class App extends Component{
     
   }
 
-  componentDidMount(){
+  componentDidMount =() =>{
     this.timer = setInterval(this.progress,100);
     this.callApi()
     .catch(err => console.log("componentDidMount ERR",err));
@@ -61,7 +61,12 @@ class App extends Component{
   //서버 API 호출yar
   callApi = async () => {
     axios.get( `${apiUrl}/customers`)
-    .then( response => this.setState({customers : response.data}))
+    .then((response)=> {
+        this.setState({customers : response.data});
+        //console.log("response.data" ,response.data);
+        //console.log("callApi customers" , this.state.customers);
+      }      
+    )
     .catch(err => console.log("callApi ERR",err));
   }
 
