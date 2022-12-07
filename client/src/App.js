@@ -31,12 +31,27 @@ const styles =theme => ({
 });
 
 class App extends Component{
-  
-  state= {
-    customers : "",
-    completed : 0,
-    seqno : 0
+
+  constructor(props){
+    super(props);
+    this.state= {
+      customers : "",
+      completed : 0      
+    }
   }
+
+  stateRefresh =()=>{
+    
+    this.setState({
+      customers : "",
+      completed : 0      
+    });
+
+    this.callApi()
+    .catch(err => console.log("componentDidMount ERR",err));
+    
+  }
+
   
   componentDidMount(){
     this.timer = setInterval(this.progress,100);
@@ -101,7 +116,7 @@ class App extends Component{
             </Table>
           </Paper>
 
-          <CustomerAdd></CustomerAdd>
+          <CustomerAdd stateRefresh={this.stateRefresh} ></CustomerAdd>
         </div>
 
     );

@@ -69,10 +69,10 @@ class CustomerAdd extends React.Component{
         
         axios.post(url,formData,config)
         .then((res)=>{
-            console.log(res.data);
-            
+            //console.log(res.data);
+            this.props.stateRefresh();            
             this.setState(
-            this.state ={
+                this.state ={
                 file : null,
                 userName :"",
                 birthday: "",
@@ -81,7 +81,7 @@ class CustomerAdd extends React.Component{
                 fileName : "" 
             });
             
-            window.location.reload();        
+            
         })
         .catch(err => console.log("addCustomer ERR",err));
     }
