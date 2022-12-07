@@ -12,20 +12,19 @@ import {withStyles} from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import axios from 'axios'
 
-
 const apiUrl = "http://localhost:5000/api";
 
 const styles =theme => ({
   root:{
     width:'100%',
-    marginTop: theme.spacing.unit * 3,
+    //marginTop: theme.spacing.unit * 3,
     overflowX:"auto"
   },
   table : {
       minWidth: 1080
   },
   progress :{
-    margin: theme.spacing.unit * 2,
+    //margin: theme.spacing.unit * 2,
     
   }
 });
@@ -34,6 +33,7 @@ class App extends Component{
 
   constructor(props){
     super(props);
+
     this.state= {
       customers : "",
       completed : 0      
@@ -52,7 +52,6 @@ class App extends Component{
     
   }
 
-  
   componentDidMount(){
     this.timer = setInterval(this.progress,100);
     this.callApi()
@@ -88,6 +87,7 @@ class App extends Component{
                     <TableCell>birthday</TableCell>
                     <TableCell>gender</TableCell>
                     <TableCell>job</TableCell>
+                    <TableCell>delete button</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -101,8 +101,12 @@ class App extends Component{
                           seqno     ={c._id}
                           key       ={c._id} 
                           id        ={c._id}
-                          image     ={c.image}    name      ={c.name}
-                          birthday  ={c.birthday} gender    ={c.gender} job={c.job}
+                          image     ={c.image}    
+                          name      ={c.name}
+                          birthday  ={c.birthday} 
+                          gender    ={c.gender} 
+                          job={c.job}
+                          stateRefresh = {this.stateRefresh}
                         >
                         </Customer>
                   )

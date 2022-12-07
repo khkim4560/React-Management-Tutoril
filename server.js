@@ -38,7 +38,7 @@ const apiCustomers = mongoose.model("customers",
   _id 			:'string',
   image 		:'string',  name 		  :'string',
   birthday 	:'string',  gender		:'string',
-  job 		  :'string'
+  job 		  :'string',   deleteAt :'string'
 });
 
 // 연결테스트 ID 값으로 조회
@@ -56,6 +56,7 @@ const apiCustomers = mongoose.model("customers",
 //create_customers_mongDb(); customers 스키마 생성
 
 const multer = require("multer");
+const { ObjectId } = require("mongodb");
 const upload = multer({dest : "./upload"});
 
 //연결테스트3
@@ -72,7 +73,7 @@ async function find_api(req, res){
   {
     //조회조건
     const apiOption ={
-      
+      "deleteAt" : "N"
     };
     
     //document find
@@ -113,7 +114,8 @@ app.post("/api/customers",upload.single("image"),(req,res)=>{
         "name"    : name,      
         "birthday": birthday,
         "gender"  : gender,
-        "job"     : job,      
+        "job"     : job,    
+        "deleteAt": "N"
       }
     ];
 
@@ -141,13 +143,58 @@ app.post("/api/customers",upload.single("image"),(req,res)=>{
   } catch(error){
     console.log(`post /api/customers save fail`, error);
     console.error(error);
-  }
- 
+  } 
+})
+
+//몽고 db 왜 업데이트 안되는지 확인
+app.post("/api/customers/:id",(req,res)=>{
+  //console.log(`app.delete("/api/customers/:id",(req,res)=>{`);  
+  try{    
+        
+    let id = req.params.id;
+    console.log("id" ,id);
+
+    var MongoClient = require('mongodb').MongoClient;
+    var url = uri;
+
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("test");
+        
+        var myquery = { "_id": ObjectId(id)  };
+        
+        var newvalues = { $set: {"deleteAt" : "Y"} };
+
+        dbo.collection("customers").updateMany(myquery, newvalues, function(err, res) { //One
+          if (err) {
+            throw err;
+          }          
+          db.close();
+        });
+      });
+
+      console.log(`post /api/customers/:id delete update success`);
+      res.send({
+        "api_cd" : "success",
+        "api_msg" : "삭제되었습니다."
+      }    
+      );
+
+} catch(error){
+  console.log(`post /api/customers/:id update fail`, error);
+    console.error(error);
+}
+
 })
 
 //문자안에 변수를 출력 할 수 있음.
 app.listen(port,()=> 
   console.log(`Listening on port ${port}}`)
+  
+
+
+
+
   //console.log("conf",conf);
   //console.log("conf.user",conf.user)
 );
