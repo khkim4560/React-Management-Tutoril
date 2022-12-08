@@ -10,22 +10,24 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import {withStyles} from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import SearchAppBar from "./components/SearchAppBar"
 import axios from 'axios'
+
 
 const apiUrl = "http://localhost:5000/api";
 
 const styles =theme => ({
   root:{
-    width:'100%',
-    //marginTop: theme.spacing.unit * 3,
-    overflowX:"auto"
+    width:'100%'
+    
+    
   },
-  table : {
-      minWidth: 1080
+  paper:{
+    marginLeft : 18,
+    marginRight : 18,
   },
   progress :{
-    //margin: theme.spacing.unit * 2,
-    
+    //margin: theme.spacing.unit * 2,    
   }
 });
 
@@ -36,7 +38,9 @@ class App extends Component{
 
     this.state= {
       customers : [],
-      completed : 0      
+      customersOrg : [],
+      completed : 0     , 
+      searchKeyword : ""
     }
   }
 
@@ -44,7 +48,9 @@ class App extends Component{
     
     this.setState({
       customers : [],
-      completed : 0
+      customersOrg : [],
+      completed : 0,
+      searchKeyword : ""
     });
 
     this.callApi()
@@ -63,6 +69,8 @@ class App extends Component{
     axios.get( `${apiUrl}/customers`)
     .then((response)=> {
         this.setState({customers : response.data});
+        this.setState({customersOrg : response.data});
+        
         //console.log("response.data" ,response.data);
         //console.log("callApi customers" , this.state.customers);
       }      
@@ -75,12 +83,26 @@ class App extends Component{
     this.setState({completed : completed >= 100 ? 0 : completed+1});    
   } 
 
+
+  editEventHandler = (e) => {
+    console.log(e.target.value);
+    console.log("editEventHandler" ,e.target.value);    
+    const data = this.state.customersOrg.filter((c) => { return c.name.indexOf(e.target.value) > -1 ; })
+    //console.log("data" ,data);
+
+   this.setState({customers : data});
+  }
+
+
   render(){
     
     const {classes } = this.props;
 
     return (
           <div>
+            
+            <SearchAppBar customers={this.state.customers} editEventHandler={this.editEventHandler}></SearchAppBar>
+
             <Paper className={classes.root}>
               
               <Table className={classes.table}>
